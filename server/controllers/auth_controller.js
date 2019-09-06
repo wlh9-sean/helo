@@ -2,7 +2,6 @@
 
 const register = async (req, res) => {
     const {username, password} = req.body
-    console.log(password)
     const db = req.app.get('db')
     
     await db.register_user([username, password]).then(user => {
@@ -21,7 +20,7 @@ const login = async (req, res) => {
 }
 
 const logout = (req, res) => {
-
+    res.session.destroy()
 }
 
 module.exports = {

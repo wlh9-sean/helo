@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
+
 
 export default class Auth extends Component {
     constructor(){
@@ -7,7 +9,8 @@ export default class Auth extends Component {
 
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            toDashboard: false
         }
     }
 
@@ -21,19 +24,35 @@ export default class Auth extends Component {
         const {username, password} = this.state
         axios.post('/auth/register', {username, password})
         .then(res => {
-            this.props.history.push('/dashboard')
+            if(this.state.toDashboard !== false){
+                this.props.history.push('/dashboard')
+            }
         })
         .catch(error => console.log(error))
     }
 
 
     render() {
+        if(this.state.dashboard === true){
+            return <Redirect to='/dashboard' /> 
+        }
         return (
             <div>
-                <input placeholder='Username:' name='username' />
-                <input placeholder='Password:' name='password' />
+                <input 
+                    type='text'
+                    placeholder='Username:' 
+                    name='username'
+                    value={this.state.username}
+                    onChange={this.handleChange}
+                     />
+                <input 
+                    type='password'
+                    placeholder='Password:' 
+                    name='password'
+                    value={this.state.password}
+                    onChange={this.handleChange} />
                 <button>Login</button>
-                <button>Register</button>
+                <button onClick={this.register}>Register</button>
             </div>
         )
     }
