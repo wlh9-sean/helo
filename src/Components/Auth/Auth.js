@@ -31,7 +31,15 @@ export default class Auth extends Component {
         .catch(error => console.log(error))
     }
 
+    login = () => {
+        const {username, password} = this.state
+        axios.post('/auth/login', {username, password})
+        .then(response => {
+            this.props.history.push('/dashboard')
+        }).catch(err => console.log(err)) 
+    }
 
+ 
     render() {
         if(this.state.dashboard === true){
             return <Redirect to='/dashboard' /> 
@@ -51,7 +59,7 @@ export default class Auth extends Component {
                     name='password'
                     value={this.state.password}
                     onChange={this.handleChange} />
-                <button>Login</button>
+                <button onClick={() => this.login}>Login</button>
                 <button onClick={this.register}>Register</button>
             </div>
         )
